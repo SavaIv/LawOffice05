@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace LawOffice05.Data
+namespace LawOffice05.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
