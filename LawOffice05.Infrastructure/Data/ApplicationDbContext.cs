@@ -10,5 +10,12 @@ namespace LawOffice05.Infrastructure.Data
             : base(options)
         {
         }
+
+        public DbSet<Case> Cases { get; set; }
+        public DbSet<Instance> Instances { get; set; }
+        public DbSet<OutsideDocument> OutsideDocuments { get; set; }
+        public DbSet<InsideDocument> InsideDocuments { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<CompanyInfo> CompanyInfos { get; set; }
     }
 }

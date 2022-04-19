@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LawOffice05.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace LawOffice05.Infrastructure.Identity
@@ -10,5 +11,8 @@ namespace LawOffice05.Infrastructure.Identity
 
         [StringLength(50)]
         public string? LastName { get; set; }
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ICollection<Case> Cases { get; set; } = new List<Case>();
     }
 }
