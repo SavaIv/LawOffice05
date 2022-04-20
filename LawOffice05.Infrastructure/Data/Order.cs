@@ -29,12 +29,12 @@ namespace LawOffice05.Infrastructure.Data
         [StringLength(30)]
         public string StatusOfTheOrder { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(User))]        
-        public string UserId { get; set; }
+        //[Required]
+        //[ForeignKey(nameof(User))]        
+        //public string? UserId { get; set; }
 
-        [Required]
-        public virtual ApplicationUser User { get; set; }
+        //[Required]
+        //public virtual ApplicationUser? User { get; set; }
 
         public string? FeedBack { get; set; }
     }

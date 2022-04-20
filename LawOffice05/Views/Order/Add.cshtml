@@ -1,27 +1,62 @@
-﻿<form>
-    <select class="form-select" aria-label="Default select example">
-        <option selected>Problem Type</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
-    <br />
-    <select class="form-select" aria-label="Default select example">
-        <option selected>Urgency Type</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
-    <br />    
-    <select class="form-select" aria-label="Default select example">
-        <option selected>Answer Type</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
-    <br />
-    <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Description of the Problem</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+﻿@using LawOffice05.Core.Models.Orders
+@model AddOrderFormModel
+
+@{
+    ViewData["Title"] = "Add Order Page";
+}
+
+<div calss="container">
+    <div class="row">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+            
+            <form method="post">
+
+                <div class="mb-3">
+                    <label asp-for="ProblemType" class="form-label "></label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>choose your Problem Type here...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="UrgencyType" class="form-label"></label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>choose your Urgency Type here...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="TypeOfAnswer" class="form-label"></label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>choose your Answer Type here...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="ProblemDescription" class="form-label"></label>
+                    @*<input asp-for="ProblemDescription" class="form-control" placeholder="Write your problem here..."/>*@
+                    <textarea asp-for="ProblemDescription" class="form-control" placeholder="Write your problem here..." rows="3"></textarea>
+                </div>
+
+                @*<td>
+                    <a asp-action="add" asp-controller="order" class="btn btn-block btn-outline-info btn-xs">Save</a>
+                </td>*@
+
+                <input class="btn btn-primary mt-3" type="submit" value="Save" />
+            </form>
+        </div>
     </div>
-</form>
+</div>
+
+
+
