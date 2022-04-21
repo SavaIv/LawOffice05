@@ -17,5 +17,6 @@ namespace LawOffice05.Infrastructure.Data
         public DbSet<InsideDocument> InsideDocuments { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<CompanyInfo> CompanyInfos { get; set; }
+        public DbSet<OrderProblemType> OrderProblemTypes { get; set; }
     }
 }
