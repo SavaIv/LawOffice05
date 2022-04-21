@@ -14,18 +14,19 @@
 
                 <div class="mb-3">
                     <label asp-for="ProblemType" class="form-label "></label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>choose your Problem Type here...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select asp-for="ProblemType" class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled>choose your Problem Type here...</option>
+                        @foreach(var probl in Model.ProblemTypeNames)
+                        {
+                            <option value="@probl.ProblemTypeName">@probl.ProblemTypeName</option>
+                        }                        
                     </select>
                 </div>
                 <br />
                 <div class="mb-3">
                     <label asp-for="UrgencyType" class="form-label"></label>
                     <select class="form-select" aria-label="Default select example">
-                        <option selected>choose your Urgency Type here...</option>
+                        <option selected>choose your Urgency Type here...</option>                        
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>

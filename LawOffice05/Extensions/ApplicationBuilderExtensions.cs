@@ -11,9 +11,10 @@ namespace LawOffice05.Extensions
             using var serviceScope = app.ApplicationServices.CreateScope();
             var services = serviceScope.ServiceProvider;
 
-            MigrateDatabase(services);
+            //MigrateDatabase(services);
 
             SeedCompanyInfo(services);
+            SeedOrderProblemType(services);
             //SeedAdministrator(services);
 
             return app;
@@ -46,26 +47,25 @@ namespace LawOffice05.Extensions
             data.SaveChanges();
         }
 
-        private static void SeedUser(IServiceProvider services)
+        private static void SeedOrderProblemType(IServiceProvider services)
         {
             var data = services.GetRequiredService<ApplicationDbContext>();
 
-            if (data.CompanyInfos.Any())
+            if (data.OrderProblemTypes.Any())
             {
                 return;
             }
 
-            data.CompanyInfos.AddRange(new[]
+            data.OrderProblemTypes.AddRange(new[]
             {
-                new CompanyInfo { TypeOfLaw = "Наказателно Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-                new CompanyInfo { TypeOfLaw = "Търговско Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-                new CompanyInfo { TypeOfLaw = "Трудово Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-                new CompanyInfo { TypeOfLaw = "Международно Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }
+                new OrderProblemType { ProblemType = "Road accident"},
+                new OrderProblemType { ProblemType = "Family problems"},
+                new OrderProblemType { ProblemType = "Property problems"},
+                new OrderProblemType { ProblemType = "Tax problems"},
+                new OrderProblemType { ProblemType = "Other"}                
             });
 
             data.SaveChanges();
         }
-
-
     }
 }

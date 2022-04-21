@@ -18,10 +18,10 @@ namespace LawOffice05.Core.Models.Orders
         [Display(Name = "Description of the Problem")]
         public string ProblemDescription { get; set; }
 
-        
+        public IEnumerable<OredrProblemTypeViewModel> ProblemTypeNames { get; set; }
 
-        
 
-        
+
+
     }
 }
