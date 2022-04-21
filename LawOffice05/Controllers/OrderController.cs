@@ -1,6 +1,7 @@
 ﻿using LawOffice05.Core.Models.Orders;
 using LawOffice05.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace LawOffice05.Controllers
 {
@@ -17,7 +18,7 @@ namespace LawOffice05.Controllers
         {
             var problemNames = new AddOrderFormModel
             {
-                ProblemTypeNames = GetProblemTypesName()
+                ProblemTypeNames = this.GetProblemTypesName()
             };
             
             return View(problemNames);
@@ -26,12 +27,39 @@ namespace LawOffice05.Controllers
         [HttpPost]
         public IActionResult Add(AddOrderFormModel order)
         {
-            return View();
+            if(!this.data.OrderProblemTypes.Any(pt => pt.ProblemType == order.ProblemType))
+            {
+                // add error in the ModelState (by hand)
+                this.ModelState.AddModelError(nameof(order.ProblemType), "Problem Type does not exist.");
+            }
+
+
+            if (!ModelState.IsValid)
+            {                
+                order.ProblemTypeNames = GetProblemTypesName();
+                
+                return View(order);
+            }
+
+            var newOrder = new Order
+            {
+                FeedBack = "n.a",
+                StatusOfTheOrder = "pending",
+                ProblemDescription = order.ProblemDescription,                
+                ProblemType = order.ProblemType,
+                TypeOfAnswer = order.TypeOfAnswer,
+                UrgencyType = order.UrgencyType                
+            };
+
+            data.Orders.Add(newOrder);
+            data.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         private IEnumerable<OredrProblemTypeViewModel> GetProblemTypesName()
         {
-            var result = data.OrderProblemTypes
+            var result = this.data.OrderProblemTypes
                 .Select(x => new OredrProblemTypeViewModel
                 {
                     Id = x.Id,

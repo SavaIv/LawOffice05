@@ -8,8 +8,8 @@ namespace LawOffice05.Core.Models.Orders
 {
     public class OredrProblemTypeViewModel
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
-        public string ProblemTypeName { get; set; }
+        public string ProblemTypeName { get; init; }
     }
 }
