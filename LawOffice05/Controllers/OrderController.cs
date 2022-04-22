@@ -57,6 +57,27 @@ namespace LawOffice05.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult All()
+        {
+            var ordres = data.Orders       
+                .OrderByDescending(o => o.Id)
+                .Select(o => new OrderListingViewModel
+                {
+                    Id = o.Id,
+                    ProblemType = o.ProblemType,
+                    UrgencyType = o.UrgencyType,
+                    TypeOfAnswer = o.TypeOfAnswer,
+                    ProblemDescription = o.ProblemDescription,
+                    StatusOfTheOrder = o.StatusOfTheOrder,
+                    FeedBack = o.FeedBack
+                })
+                
+                .ToList();        
+            
+            return View(ordres);
+        }
+
+
         private IEnumerable<OredrProblemTypeViewModel> GetProblemTypesName()
         {
             var result = this.data.OrderProblemTypes
