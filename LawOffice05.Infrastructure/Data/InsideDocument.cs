@@ -21,8 +21,10 @@ namespace LawOffice05.Infrastructure.Data
         [StringLength(50)]
         public string RecipientЕntranceNumber { get; set; }
 
+        [StringLength(160)]
         public string TheDocumentInfo { get; set; }
 
+        [StringLength(256)]
         public string TheDocument { get; set; }
 
         [Required]

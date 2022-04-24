@@ -105,11 +105,13 @@ namespace LawOffice05.Migrations
 
                     b.Property<string>("TheDocument")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("TheDocumentInfo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
 
                     b.Property<string>("TypeOfTheDocument")
                         .IsRequired()
@@ -171,7 +173,8 @@ namespace LawOffice05.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("FeedBack")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
 
                     b.Property<string>("ProblemDescription")
                         .IsRequired()
@@ -198,7 +201,13 @@ namespace LawOffice05.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -242,11 +251,13 @@ namespace LawOffice05.Migrations
 
                     b.Property<string>("TheDocument")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("TheDocumentInfo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
 
                     b.Property<string>("TypeOfTheDocument")
                         .IsRequired()
@@ -475,7 +486,7 @@ namespace LawOffice05.Migrations
                     b.HasOne("LawOffice05.Infrastructure.Identity.ApplicationUser", "User")
                         .WithMany("Cases")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -486,7 +497,7 @@ namespace LawOffice05.Migrations
                     b.HasOne("LawOffice05.Infrastructure.Data.Instance", "Instance")
                         .WithMany("InsideDocuments")
                         .HasForeignKey("InstanceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Instance");
@@ -497,10 +508,21 @@ namespace LawOffice05.Migrations
                     b.HasOne("LawOffice05.Infrastructure.Data.Case", "Case")
                         .WithMany("Instances")
                         .HasForeignKey("CaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Case");
+                });
+
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Order", b =>
+                {
+                    b.HasOne("LawOffice05.Infrastructure.Identity.ApplicationUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.OutsideDocument", b =>
@@ -508,7 +530,7 @@ namespace LawOffice05.Migrations
                     b.HasOne("LawOffice05.Infrastructure.Data.Instance", "Instance")
                         .WithMany("OutsideDocuments")
                         .HasForeignKey("InstanceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Instance");
@@ -580,6 +602,8 @@ namespace LawOffice05.Migrations
             modelBuilder.Entity("LawOffice05.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("Cases");
+
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

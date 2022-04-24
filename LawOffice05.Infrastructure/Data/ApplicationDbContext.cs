@@ -11,6 +11,41 @@ namespace LawOffice05.Infrastructure.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Case>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Cases)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Instance>()
+                .HasOne(i => i.Case)
+                .WithMany(c => c.Instances)
+                .HasForeignKey(i => i.CaseId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<InsideDocument>()
+                .HasOne(d => d.Instance)
+                .WithMany(i => i.InsideDocuments)
+                .HasForeignKey(d => d.InstanceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<OutsideDocument>()
+                .HasOne(d => d.Instance)
+                .WithMany(i => i.OutsideDocuments)
+                .HasForeignKey(d => d.InstanceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(builder);
+        }
+
         public DbSet<Case> Cases { get; set; }
         public DbSet<Instance> Instances { get; set; }
         public DbSet<OutsideDocument> OutsideDocuments { get; set; }

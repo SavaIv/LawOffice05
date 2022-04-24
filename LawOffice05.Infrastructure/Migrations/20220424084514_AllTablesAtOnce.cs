@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LawOffice05.Migrations
 {
-    public partial class AllEntitiesAtOnes : Migration
+    public partial class AllTablesAtOnce : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace LawOffice05.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,6 +46,19 @@ namespace LawOffice05.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderProblemTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProblemType = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderProblemTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -57,7 +70,7 @@ namespace LawOffice05.Migrations
                     ProblemDescription = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     StatusOfTheOrder = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FeedBack = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    FeedBack = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -67,7 +80,7 @@ namespace LawOffice05.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,7 +104,7 @@ namespace LawOffice05.Migrations
                         column: x => x.CaseId,
                         principalTable: "Cases",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,8 +117,8 @@ namespace LawOffice05.Migrations
                     DateOfCreating = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompanyOutGoingNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     RecipientЕntranceNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    TheDocumentInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TheDocument = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TheDocumentInfo = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    TheDocument = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     InstanceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -116,7 +129,7 @@ namespace LawOffice05.Migrations
                         column: x => x.InstanceId,
                         principalTable: "Instances",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,8 +141,8 @@ namespace LawOffice05.Migrations
                     TypeOfTheDocument = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     OriginalNumberOfTheDocument = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     OriginalDateOfTheDocument = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TheDocumentInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TheDocument = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TheDocumentInfo = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    TheDocument = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     InstanceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -140,7 +153,7 @@ namespace LawOffice05.Migrations
                         column: x => x.InstanceId,
                         principalTable: "Instances",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -176,6 +189,9 @@ namespace LawOffice05.Migrations
 
             migrationBuilder.DropTable(
                 name: "InsideDocuments");
+
+            migrationBuilder.DropTable(
+                name: "OrderProblemTypes");
 
             migrationBuilder.DropTable(
                 name: "Orders");

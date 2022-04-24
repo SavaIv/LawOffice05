@@ -24,4 +24,8 @@
     <ProjectReference Include="..\LawOffice05.Core\LawOffice05.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

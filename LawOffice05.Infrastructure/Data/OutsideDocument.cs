@@ -17,8 +17,10 @@ namespace LawOffice05.Infrastructure.Data
 
         public DateTime OriginalDateOfTheDocument { get; set; }
 
+        [StringLength(160)]
         public string TheDocumentInfo { get; set; }
 
+        [StringLength(256)]
         public string TheDocument { get; set; }
 
         [Required]
