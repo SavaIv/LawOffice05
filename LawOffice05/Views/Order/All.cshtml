@@ -1,13 +1,67 @@
 ﻿@model IEnumerable<OrderListingViewModel>
 
-@foreach (var order in Model)
-{
-        <div class="card" style="width: 18rem;">
-            <img src="~/img/phone.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-}
+
+
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th>Problem</th>
+            <th>Urgency</th>
+            <th>Answer Type</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Client Name</th>
+            <th>FeedBack</th>
+            <th>Take Action</th>
+        </tr>
+    </thead>
+    <tbody>        
+        @foreach (var order in Model)
+        {
+            <tr>
+                <th scope="col">@order.OrderId</th>
+                <td>@order.ProblemType</td>
+                <td>@order.UrgencyType</td>
+                <td>@order.TypeOfAnswer</td>
+                <td>@order.ProblemDescription</td>
+                <td>@order.StatusOfTheOrder</td>
+                <td>@order.UserName</td>
+                <td>@order.FeedBack</td>
+                <td>
+                    <a asp-action="feedback" asp-controller="order" asp-route-id="@order.OrderId" class="btn btn-block btn-outline-info btn-xs">Update feed back</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div class="row">
+    @foreach (var order in Model)
+    {
+    <div class="col-md-4">
+    <div class="card" style="width: 18rem;">
+    <img src="~/img/phone.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+    </div>
+    </div>
+    }
+    </div>*@

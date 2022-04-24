@@ -53,7 +53,7 @@ namespace LawOffice05.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cases");
+                    b.ToTable("Cases", (string)null);
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.CompanyInfo", b =>
@@ -76,7 +76,7 @@ namespace LawOffice05.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CompanyInfos");
+                    b.ToTable("CompanyInfos", (string)null);
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.InsideDocument", b =>
@@ -122,7 +122,7 @@ namespace LawOffice05.Migrations
 
                     b.HasIndex("InstanceId");
 
-                    b.ToTable("InsideDocuments");
+                    b.ToTable("InsideDocuments", (string)null);
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.Instance", b =>
@@ -161,7 +161,7 @@ namespace LawOffice05.Migrations
 
                     b.HasIndex("CaseId");
 
-                    b.ToTable("Instances");
+                    b.ToTable("Instances", (string)null);
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.Order", b =>
@@ -209,7 +209,7 @@ namespace LawOffice05.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.OrderProblemType", b =>
@@ -227,7 +227,7 @@ namespace LawOffice05.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderProblemTypes");
+                    b.ToTable("OrderProblemTypes", (string)null);
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.OutsideDocument", b =>
@@ -268,7 +268,7 @@ namespace LawOffice05.Migrations
 
                     b.HasIndex("InstanceId");
 
-                    b.ToTable("OutsideDocuments");
+                    b.ToTable("OutsideDocuments", (string)null);
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Identity.ApplicationUser", b =>

@@ -6,7 +6,8 @@ namespace LawOffice05.Core.Models.Orders
 {
     public class AddOrderFormModel
     {
-        //public int Id { get; set; }
+        //[MaxLength(100)]
+        //public string Id { get; set; }
 
         [Required]
         [MaxLength(30)]

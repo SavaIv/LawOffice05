@@ -1,7 +1,9 @@
 ﻿using LawOffice05.Core.Models.Orders;
 using LawOffice05.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace LawOffice05.Controllers
 {
@@ -14,8 +16,9 @@ namespace LawOffice05.Controllers
             data = _data;
         }
 
+        [Authorize]
         public IActionResult Add()
-        {
+        {          
             var problemNames = new AddOrderFormModel
             {
                 ProblemTypeNames = this.GetProblemTypesName()
@@ -24,9 +27,11 @@ namespace LawOffice05.Controllers
             return View(problemNames);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Add(AddOrderFormModel order)
         {
+            // целта е да се предпазим от това, някой да подпъхне нещо зловредно
             if(!this.data.OrderProblemTypes.Any(pt => pt.ProblemType == order.ProblemType))
             {
                 // add error in the ModelState (by hand)
@@ -48,7 +53,8 @@ namespace LawOffice05.Controllers
                 ProblemDescription = order.ProblemDescription,                
                 ProblemType = order.ProblemType,
                 TypeOfAnswer = order.TypeOfAnswer,
-                UrgencyType = order.UrgencyType                
+                UrgencyType = order.UrgencyType,
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
             };
 
             data.Orders.Add(newOrder);
@@ -63,12 +69,13 @@ namespace LawOffice05.Controllers
                 .OrderByDescending(o => o.Id)
                 .Select(o => new OrderListingViewModel
                 {
-                    Id = o.Id,
+                    OrderId = o.Id,
                     ProblemType = o.ProblemType,
                     UrgencyType = o.UrgencyType,
                     TypeOfAnswer = o.TypeOfAnswer,
                     ProblemDescription = o.ProblemDescription,
                     StatusOfTheOrder = o.StatusOfTheOrder,
+                    UserName = o.User.FirstName + " " + o.User.LastName,
                     FeedBack = o.FeedBack
                 })
                 
