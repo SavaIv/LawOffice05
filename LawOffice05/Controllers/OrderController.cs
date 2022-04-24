@@ -84,6 +84,35 @@ namespace LawOffice05.Controllers
             return View(ordres);
         }
 
+        public IActionResult FeedBack(int Id)
+        {
+            var theOrder = GetOrderByOrderId(Id);
+
+            var theModel = new OrderFeedbackViewModel()
+            {
+                OrderId = Id,
+                FeedBack = theOrder.FeedBack
+            };
+
+            return View(theModel);
+        }
+
+        [HttpPost]
+        public IActionResult FeedBack(OrderFeedbackViewModel feedBackModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                // подаваме същия модел  
+                return View(feedBackModel);
+            }
+
+            var orderToBeModified = data.Orders.First(o => o.Id == feedBackModel.OrderId);
+            orderToBeModified.FeedBack = feedBackModel.FeedBack;
+
+            data.SaveChanges();
+
+            return RedirectToAction("All", "Order");
+        }
 
         private IEnumerable<OredrProblemTypeViewModel> GetProblemTypesName()
         {
@@ -96,6 +125,13 @@ namespace LawOffice05.Controllers
                 .ToList();
 
             return result;
+        }
+
+        private Order GetOrderByOrderId(int Id)
+        {
+            var resultOrder = data.Orders.First(o => o.Id == Id);
+            
+            return resultOrder;
         }
     }
 }
