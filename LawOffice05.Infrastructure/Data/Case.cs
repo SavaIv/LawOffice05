@@ -17,10 +17,30 @@ namespace LawOffice05.Infrastructure.Data
         [StringLength(50)]
         public string InsideCaseName { get; set; }
 
-        [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string ClientFirstName { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string ClientMiddleName { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string ClientFamiliName { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string ClientAdrress { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string ClientID { get; set; }
+
+        //[ForeignKey(nameof(User))]
+        //public string UserId { get; set; }
+
+        //public virtual ApplicationUser User { get; set; }
 
         [Required]
         [StringLength(160)]

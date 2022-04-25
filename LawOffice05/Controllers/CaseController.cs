@@ -2,9 +2,9 @@
 
 namespace LawOffice05.Controllers
 {
-    public class Case : Controller
+    public class CaseController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Add()
         {
             return View();
         }

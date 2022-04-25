@@ -13,6 +13,7 @@ namespace LawOffice05.Infrastructure.Identity
         public string? LastName { get; set; }
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
-        public ICollection<Case> Cases { get; set; } = new List<Case>();
+
+        //public ICollection<Case> Cases { get; set; } = new List<Case>();
     }
 }

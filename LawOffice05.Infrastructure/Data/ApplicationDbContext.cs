@@ -13,11 +13,11 @@ namespace LawOffice05.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Case>()
-                .HasOne(c => c.User)
-                .WithMany(u => u.Cases)
-                .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Case>()
+            //    .HasOne(c => c.User)
+            //    .WithMany(u => u.Cases)
+            //    .HasForeignKey(c => c.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Instance>()
                 .HasOne(i => i.Case)
