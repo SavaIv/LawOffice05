@@ -15,5 +15,16 @@ namespace LawOffice05.Controllers
         {
             return View();
         }
+
+
+        public IActionResult SeedDb()
+        {
+
+
+
+            return View();
+        }
+
+
     }
 }
