@@ -8,7 +8,7 @@ namespace LawOffice05.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
-        private readonly ApplicationDbContext data;
+        //private readonly ApplicationDbContext data;
 
         public HomeController(ILogger<HomeController> _logger)
         {

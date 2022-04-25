@@ -1,0 +1,72 @@
+﻿@using LawOffice05.Core.Models.Case
+@model AddCaseViewModel
+
+@{
+    ViewData["Title"] = "Add Case Page";
+}
+
+<div calss="container">
+    <div class="row">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+            
+            <form method="post">                
+                  
+                <div class="mb-3">
+                    <label asp-for="InsideCaseNumber" class="form-label"></label>
+                    <input asp-for="InsideCaseNumber" class="form-control" placeholder="Write the content here..."/>
+                    <span asp-validation-for="InsideCaseNumber" class="small text-danger"></span>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="InsideCaseName" class="form-label"></label>
+                    <input asp-for="InsideCaseName" class="form-control" placeholder="Write the content here..."/>
+                    <span asp-validation-for="InsideCaseName" class="small text-danger"></span>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="ClientFirstName" class="form-label"></label>
+                    <input asp-for="ClientFirstName" class="form-control" placeholder="Write the content here..."/>
+                    <span asp-validation-for="ClientFirstName" class="small text-danger"></span>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="ClientMiddleName" class="form-label"></label>
+                    <input asp-for="ClientMiddleName" class="form-control" placeholder="Write the content here..."/>
+                    <span asp-validation-for="ClientMiddleName" class="small text-danger"></span>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="ClientFamiliName" class="form-label"></label>
+                    <input asp-for="ClientFamiliName" class="form-control" placeholder="Write the content here..."/>
+                    <span asp-validation-for="ClientFamiliName" class="small text-danger"></span>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="ClientAdrress" class="form-label"></label>
+                    <input asp-for="ClientAdrress" class="form-control" placeholder="Write the content here..."/>
+                    <span asp-validation-for="ClientAdrress" class="small text-danger"></span>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="ClientID" class="form-label"></label>
+                    <input asp-for="ClientID" class="form-control" placeholder="Write the content here..."/>
+                    <span asp-validation-for="ClientID" class="small text-danger"></span>
+                </div>
+                <br />
+                <div class="mb-3">
+                    <label asp-for="CaseDescription" class="form-label"></label>
+                    @*<input asp-for="ProblemDescription" class="form-control" placeholder="Write your problem here..."/>*@
+                    <textarea asp-for="CaseDescription" class="form-control" placeholder="Write your problem here..." rows="3"></textarea>
+                    <span asp-validation-for="CaseDescription" class="small text-danger"></span>
+                </div>
+
+                @*<td>
+                    <a asp-action="add" asp-controller="order" class="btn btn-block btn-outline-info btn-xs">Save</a>
+                </td>*@
+
+                <input class="btn btn-primary mt-3" type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>

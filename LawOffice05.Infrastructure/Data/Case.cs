@@ -30,7 +30,7 @@ namespace LawOffice05.Infrastructure.Data
         public string ClientFamiliName { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(60)]
         public string ClientAdrress { get; set; }
 
         [Required]
