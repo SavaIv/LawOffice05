@@ -14,6 +14,7 @@ namespace LawOffice05.Core.Models.Case
         public IEnumerable<AllCasesViewModel> Cases { get; set; }
 
         // това ще ни е нужно, когато ще търсим по CaseDescription
+        [Display(Name = "Case Description")]
         public string CaseDescription { get; set; }
 
         // това ще ни е нужно, когато ще търсим по CaseDescription

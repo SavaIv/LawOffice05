@@ -1,4 +1,5 @@
 ﻿using LawOffice05.Core.Models.Case;
+using LawOffice05.Core.Models.Case.Enumerations;
 using LawOffice05.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,21 +53,30 @@ namespace LawOffice05.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult AllCases(string searchTerm, string caseDescription)
+        [HttpGet]
+        public IActionResult AllCases([FromQuery]AllCasesQueryModel query)
         {
             var caseQuery = data.Cases.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(caseDescription))
+            if (!string.IsNullOrWhiteSpace(query.CaseDescription))
             {
-                caseQuery = caseQuery.Where(c => c.CaseDescription == caseDescription);
+                caseQuery = caseQuery.Where(c => c.CaseDescription == query.CaseDescription);
             }
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
                 caseQuery = caseQuery.Where(c =>
                     (c.ClientFirstName + " " + c.ClientMiddleName + " " + c.ClientFamiliName)
-                    .ToLower().Contains(searchTerm.ToLower()));
+                    .ToLower().Contains(query.SearchTerm.ToLower()));
             }
+
+            caseQuery = query.Sorting switch
+            {
+                CaseSorting.CaseNumber => caseQuery.OrderBy(c => c.InsideCaseNumber),
+                CaseSorting.CaseDiscriprion => caseQuery.OrderBy(c => c.CaseDescription),
+                CaseSorting.ClientName => caseQuery.OrderBy(c => c.ClientFirstName),
+                _ => caseQuery.OrderBy(c => c.InsideCaseNumber)
+            };
 
             var allCases = caseQuery
                 .Select(c => new AllCasesViewModel()
@@ -85,13 +95,11 @@ namespace LawOffice05.Controllers
                 .Distinct()
                 .OrderBy(c => c)
                 .ToList();
+           
+            query.Cases = allCases;
+            query.CaseDescriptions = CaseDescriptionList;
 
-            return View(new AllCasesQueryModel
-            {
-                Cases = allCases,
-                SearchTerm = searchTerm,
-                CaseDescriptions = CaseDescriptionList
-            });
+            return View(query);
         }
 
         public IActionResult ClientInfo(int id)

@@ -4,10 +4,6 @@
 
 <form method="get">
     <div class="row">
-        <div class="form-group col-md-4">
-            <label asp-for="SearchTerm"></label>
-            <input asp-for="SearchTerm" class="form-control" placeholder="Put your serach term here...">
-        </div>
 
         <div class="form-group col-md-4">
             <div class="form-group">
@@ -23,14 +19,47 @@
             </div>
         </div>
 
-        @*<div class="form-group col-md-4">
+        <div class="form-group col-md-4">
             <label asp-for="SearchTerm"></label>
             <input asp-for="SearchTerm" class="form-control" placeholder="Put your serach term here...">
-        </div>*@
-        <div class="form-group col-md-3">
-            <input type="submit" calss="btn btn-primary d-none" value="Search" />
+        </div>
+
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Sorting"></label>
+                <select asp-for="Sorting" class="form-control">
+                    @*<option value="" selected disabled>choose how the sorting to be done...</option>*@
+                    @*<option value="0">Case Number</option>*@
+                    @*<option value="1">Case Description</option>*@
+                    @*<option value="2"></option>  *@
+                    <option value="0" selected>Case Number</option>
+                    <option value="1">Case Description</option>
+                    <option value="2">Client Name</option>
+                </select>
+            </div>
         </div>
     </div>
+
+    @*<label asp-for="TypeOfAnswer" class="form-label"></label>
+   <select asp-for="TypeOfAnswer" class="form-select">
+                        <option value="" selected disabled>choose your Answer Type here...</option>
+                        <option value="Phone call">Phone call</option>
+                        <option value="e-mail">e-mail</option>
+                        <option value="SMS">SMS</option>
+                    </select>
+*@
+    <br />
+
+    @*<div class="form-group col-md-4">
+        <label asp-for="SearchTerm"></label>
+        <input asp-for="SearchTerm" class="form-control" placeholder="Put your serach term here...">
+        </div>*@
+    <div class="form-group col-md-4">
+        <input type="submit" calss="btn btn-primary d-none" value="Search / Sorting" />
+    </div>
+
+    <br />
+
 </form>
 
 <table class="table table-striped table-hover">
