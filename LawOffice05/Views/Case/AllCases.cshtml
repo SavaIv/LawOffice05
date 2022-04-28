@@ -1,0 +1,61 @@
+﻿@using LawOffice05.Core.Models.Case
+@model AllCasesQueryModel
+
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Put your serach term here...">
+        </div>
+
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="CaseDescription"></label>
+                <select asp-for="CaseDescription" class="form-control">
+                    <option value="">All</option>
+
+                    @foreach (var caseDescr in Model.CaseDescriptions)
+                    {
+                        <option value="@caseDescr">@caseDescr</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        @*<div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Put your serach term here...">
+        </div>*@
+        <div class="form-group col-md-3">
+            <input type="submit" calss="btn btn-primary d-none" value="Search" />
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>InsideCaseNumber</th>
+            <th>InsideCaseName</th>
+            <th>ClientName</th>
+            <th>CaseDescription</th>
+            <th>Take Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var theCase in Model.Cases)
+        {
+            <tr>
+                <td>@theCase.InsideCaseNumber</td>
+                <td>@theCase.InsideCaseName</td>
+                <td>@theCase.ClientName</td>
+                <td>@theCase.CaseDescription</td>
+                <td>
+                    <a asp-action="ClientInfo" asp-controller="case" asp-route-id="@theCase.CaseId" class="btn btn-block btn-outline-info btn-xs">Client info</a>
+                    <a asp-action="ClientInfo" asp-controller="case" asp-route-id="@theCase.CaseId" class="btn btn-block btn-outline-info btn-xs">Add Instance</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

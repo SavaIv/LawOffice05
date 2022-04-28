@@ -55,11 +55,22 @@
                 </div>
                 <br />
                 <div class="mb-3">
-                    <label asp-for="CaseDescription" class="form-label"></label>
-                    @*<input asp-for="ProblemDescription" class="form-control" placeholder="Write your problem here..."/>*@
-                    <textarea asp-for="CaseDescription" class="form-control" placeholder="Write your problem here..." rows="3"></textarea>
+                    <label asp-for="CaseDescription" class="form-label "></label>
+                    <select asp-for="CaseDescription" class="form-select">
+                        <option value="" selected disabled>choose your Problem Type here...</option>
+                        @foreach(var probl in Model.CaseDescriptionNames)
+                        {
+                            <option value="@probl.ProblemType">@probl.ProblemType</option>
+                        }                        
+                    </select>
                     <span asp-validation-for="CaseDescription" class="small text-danger"></span>
                 </div>
+
+                @*<div class="mb-3">
+                    <label asp-for="CaseDescription" class="form-label"></label>                    
+                    <textarea asp-for="CaseDescription" class="form-control" placeholder="Write your problem here..." rows="3"></textarea>
+                    <span asp-validation-for="CaseDescription" class="small text-danger"></span>
+                </div>*@
 
                 @*<td>
                     <a asp-action="add" asp-controller="order" class="btn btn-block btn-outline-info btn-xs">Save</a>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LawOffice05.Core.Models.Orders;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 namespace LawOffice05.Core.Models.Case
 {
     public class AddCaseViewModel
-    {        
+    {
         [Required]
         [MaxLength(30)]
         [MinLength(2)]
@@ -40,7 +42,7 @@ namespace LawOffice05.Core.Models.Case
         public string ClientFamiliName { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(60)]
         [MinLength(2)]
         [Display(Name = "Client Adrress")]
         public string ClientAdrress { get; set; }
@@ -52,9 +54,12 @@ namespace LawOffice05.Core.Models.Case
         public string ClientID { get; set; }
 
         [Required]
-        [MaxLength(160)]
-        [MinLength(10)]
+        [MaxLength(30)]
+        [MinLength(2)]
         [Display(Name = "Case Description")]
         public string CaseDescription { get; set; }
+
+        [BindNever]
+        public IEnumerable<CaseDescriptionViewModel>? CaseDescriptionNames { get; set; }
     }
 }

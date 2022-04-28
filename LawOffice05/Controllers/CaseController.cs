@@ -16,7 +16,12 @@ namespace LawOffice05.Controllers
 
         public IActionResult AddCase()
         {
-            return View();
+            var aModelWithCaseDiscrition = new AddCaseViewModel()
+            {
+                CaseDescriptionNames = GetCaseDescriptions()
+            };
+
+            return View(aModelWithCaseDiscrition);
         }
 
         [HttpPost]
@@ -24,6 +29,8 @@ namespace LawOffice05.Controllers
         {
             if (!ModelState.IsValid)
             {
+                caseModel.CaseDescriptionNames = GetCaseDescriptions();
+
                 return View(caseModel);
             }
 
@@ -43,6 +50,82 @@ namespace LawOffice05.Controllers
             data.SaveChanges();
             
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult AllCases(string searchTerm, string caseDescription)
+        {
+            var caseQuery = data.Cases.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(caseDescription))
+            {
+                caseQuery = caseQuery.Where(c => c.CaseDescription == caseDescription);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                caseQuery = caseQuery.Where(c =>
+                    (c.ClientFirstName + " " + c.ClientMiddleName + " " + c.ClientFamiliName)
+                    .ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            var allCases = caseQuery
+                .Select(c => new AllCasesViewModel()
+                {
+                    CaseId = c.Id,
+                    InsideCaseNumber = c.InsideCaseNumber,
+                    InsideCaseName = c.InsideCaseName,
+                    ClientName = c.ClientFirstName + " " + c.ClientFamiliName,
+                    CaseDescription = c.CaseDescription
+                })
+                .ToList();
+
+            var CaseDescriptionList = this.data
+                .Cases
+                .Select(c => c.CaseDescription)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
+
+            return View(new AllCasesQueryModel
+            {
+                Cases = allCases,
+                SearchTerm = searchTerm,
+                CaseDescriptions = CaseDescriptionList
+            });
+        }
+
+        public IActionResult ClientInfo(int id)
+        {
+            var theCase = GetCaseById(id);
+
+            var theClientInfo = new ClientInfoViewModel()
+            {
+                ClientFullName = theCase.ClientFirstName + " " + theCase.ClientMiddleName + " " + theCase.ClientFamiliName,
+                ClientEGN = theCase.ClientID,
+                ClientAddress = theCase.ClientAdrress
+            };
+
+            return View(theClientInfo);
+        }
+
+        private Case GetCaseById(int id)
+        {
+            var theCase = data.Cases.FirstOrDefault(c => c.Id == id);
+
+            return theCase;
+        }
+
+        private IEnumerable<CaseDescriptionViewModel> GetCaseDescriptions()
+        {
+            var allCaseDescriptionNames = data.OrderProblemTypes
+                .Select(c => new CaseDescriptionViewModel()
+                {
+                    Id = c.Id,
+                    ProblemType = c.ProblemType
+                })
+                .ToList();
+
+            return allCaseDescriptionNames;
         }
     }
 }

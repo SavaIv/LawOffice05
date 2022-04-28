@@ -1,0 +1,20 @@
+﻿@using LawOffice05.Core.Models.Case
+@model ClientInfoViewModel
+
+
+<div calss="row">
+    <div class="ccol-sm-12 offset-lg-2 col-lg-8 offset-xl-4 col-xl-6">
+
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                <b><u>Client Information</u></b>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>Full Name: </b>@Model.ClientFullName</li>
+                <li class="list-group-item"><b>Client EGN: </b>@Model.ClientEGN</li>
+                <li class="list-group-item"><b>Address: </b>@Model.ClientAddress</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
