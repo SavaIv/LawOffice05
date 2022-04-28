@@ -79,6 +79,8 @@ namespace LawOffice05.Controllers
             };
 
             var allCases = caseQuery
+                .Skip((query.CurrentPage - 1) * AllCasesQueryModel.CasesPerPage)
+                .Take(AllCasesQueryModel.CasesPerPage)
                 .Select(c => new AllCasesViewModel()
                 {
                     CaseId = c.Id,

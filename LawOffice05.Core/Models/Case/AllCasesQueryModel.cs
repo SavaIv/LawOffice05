@@ -10,6 +10,11 @@ namespace LawOffice05.Core.Models.Case
 {
     public class AllCasesQueryModel
     {
+        // това ще ни е нужно за paging-a
+        public const int CasesPerPage = 3;
+
+        public int CurrentPage { get; init; } = 1;
+
         // всички cases, които ще визуализираме (модела, който ще заменим в AllCases)
         public IEnumerable<AllCasesViewModel> Cases { get; set; }
 
