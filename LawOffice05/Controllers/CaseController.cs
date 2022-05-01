@@ -97,7 +97,10 @@ namespace LawOffice05.Controllers
                 .Distinct()
                 .OrderBy(c => c)
                 .ToList();
-           
+
+            var totalCases = caseQuery.Count();
+
+            query.TotalCases = totalCases;
             query.Cases = allCases;
             query.CaseDescriptions = CaseDescriptionList;
 
