@@ -108,7 +108,8 @@ namespace LawOffice05.Controllers
                     InsideCaseNumber = c.InsideCaseNumber,
                     InsideCaseName = c.InsideCaseName,
                     ClientName = c.ClientFirstName + " " + c.ClientFamiliName,
-                    CaseDescription = c.CaseDescription
+                    CaseDescription = c.CaseDescription,
+                    SupervisorName = c.Senior.User.FirstName + " " + c.Senior.User.LastName
                 })
                 .ToList();
 
@@ -123,7 +124,7 @@ namespace LawOffice05.Controllers
 
             query.TotalCases = totalCases;
             query.Cases = allCases;
-            query.CaseDescriptions = CaseDescriptionList;
+            query.CaseDescriptions = CaseDescriptionList;            
 
             return View(query);
         }

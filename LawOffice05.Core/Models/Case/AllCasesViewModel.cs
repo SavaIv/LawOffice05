@@ -17,5 +17,7 @@ namespace LawOffice05.Core.Models.Case
         public string ClientName { get; set; }       
                       
         public string CaseDescription { get; set; }
+
+        public string SupervisorName { get; set; }
     }
 }
