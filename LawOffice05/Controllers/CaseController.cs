@@ -1,7 +1,9 @@
 ﻿using LawOffice05.Core.Models.Case;
 using LawOffice05.Core.Models.Case.Enumerations;
 using LawOffice05.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LawOffice05.Controllers
 {
@@ -14,9 +16,15 @@ namespace LawOffice05.Controllers
             data = _data;
         }
 
-
+        [Authorize]
         public IActionResult AddCase()
         {
+            if (!UserIsDealer())
+            {
+                return RedirectToAction(nameof(SeniorsController.Become), "Seniors");
+            }
+
+
             var aModelWithCaseDiscrition = new AddCaseViewModel()
             {
                 CaseDescriptionNames = GetCaseDescriptions()
@@ -26,8 +34,20 @@ namespace LawOffice05.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult AddCase(AddCaseViewModel caseModel)
         {
+            // искаме инфо - кой е текущия senior (предвид id-то на логнатия юзър). Само senior може да add-ва
+            var seniorId = data.Seniors
+                .Where(d => d.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .Select(d => d.Id)
+                .FirstOrDefault();
+
+            if (seniorId == 0)
+            {
+                return RedirectToAction(nameof(SeniorsController.Become), "Seniors");
+            }
+
             if (!ModelState.IsValid)
             {
                 caseModel.CaseDescriptionNames = GetCaseDescriptions();
@@ -44,17 +64,18 @@ namespace LawOffice05.Controllers
                 ClientFamiliName = caseModel.ClientFamiliName,
                 ClientAdrress = caseModel.ClientAdrress,
                 ClientID = caseModel.ClientID,
-                CaseDescription = caseModel.CaseDescription
+                CaseDescription = caseModel.CaseDescription,
+                SeniorId = seniorId
             };
 
             data.Cases.Add(newCase);
             data.SaveChanges();
-            
+
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public IActionResult AllCases([FromQuery]AllCasesQueryModel query)
+        public IActionResult AllCases([FromQuery] AllCasesQueryModel query)
         {
             var caseQuery = data.Cases.AsQueryable();
 
@@ -140,5 +161,14 @@ namespace LawOffice05.Controllers
 
             return allCaseDescriptionNames;
         }
+
+        private bool UserIsDealer()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIsSenior = data.Seniors.Any(s => s.UserId == userId);
+            
+            return userIsSenior;
+        }
+
     }
 }
