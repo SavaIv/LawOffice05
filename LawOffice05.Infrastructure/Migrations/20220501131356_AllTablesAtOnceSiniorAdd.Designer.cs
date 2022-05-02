@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LawOffice05.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220424084514_AllTablesAtOnce")]
-    partial class AllTablesAtOnce
+    [Migration("20220501131356_AllTablesAtOnceSiniorAdd")]
+    partial class AllTablesAtOnceSiniorAdd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,31 @@ namespace LawOffice05.Migrations
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
 
+                    b.Property<string>("ClientAdrress")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("ClientFamiliName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ClientFirstName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ClientID")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ClientMiddleName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("InsideCaseName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -47,13 +72,12 @@ namespace LawOffice05.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SeniorId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SeniorId");
 
                     b.ToTable("Cases");
                 });
@@ -273,6 +297,31 @@ namespace LawOffice05.Migrations
                     b.ToTable("OutsideDocuments");
                 });
 
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Senior", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Seniors");
+                });
+
             modelBuilder.Entity("LawOffice05.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -485,13 +534,13 @@ namespace LawOffice05.Migrations
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.Case", b =>
                 {
-                    b.HasOne("LawOffice05.Infrastructure.Identity.ApplicationUser", "User")
+                    b.HasOne("LawOffice05.Infrastructure.Data.Senior", "Senior")
                         .WithMany("Cases")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SeniorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Senior");
                 });
 
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.InsideDocument", b =>
@@ -536,6 +585,17 @@ namespace LawOffice05.Migrations
                         .IsRequired();
 
                     b.Navigation("Instance");
+                });
+
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Senior", b =>
+                {
+                    b.HasOne("LawOffice05.Infrastructure.Identity.ApplicationUser", "User")
+                        .WithOne("Senior")
+                        .HasForeignKey("LawOffice05.Infrastructure.Data.Senior", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -601,11 +661,17 @@ namespace LawOffice05.Migrations
                     b.Navigation("OutsideDocuments");
                 });
 
-            modelBuilder.Entity("LawOffice05.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Senior", b =>
                 {
                     b.Navigation("Cases");
+                });
 
+            modelBuilder.Entity("LawOffice05.Infrastructure.Identity.ApplicationUser", b =>
+                {
                     b.Navigation("Orders");
+
+                    b.Navigation("Senior")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

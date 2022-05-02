@@ -42,6 +42,11 @@ namespace LawOffice05.Infrastructure.Data
 
         //public virtual ApplicationUser User { get; set; }
 
+        [ForeignKey(nameof(Senior))]
+        public int SeniorId { get; set; }
+
+        public Senior Senior { get; set; }
+
         [Required]
         [StringLength(160)]
         public string CaseDescription { get; set; }

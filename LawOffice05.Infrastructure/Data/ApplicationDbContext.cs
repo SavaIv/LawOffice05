@@ -43,6 +43,18 @@ namespace LawOffice05.Infrastructure.Data
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Senior)
+                .WithOne(s => s.User)
+                .HasForeignKey<Senior>(u => u.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Case>()
+                .HasOne(c => c.Senior)
+                .WithMany(s => s.Cases)
+                .HasForeignKey(c => c.SeniorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(builder);
         }
 
@@ -53,5 +65,6 @@ namespace LawOffice05.Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<CompanyInfo> CompanyInfos { get; set; }
         public DbSet<OrderProblemType> OrderProblemTypes { get; set; }
+        public DbSet<Senior> Seniors { get; set; }
     }
 }

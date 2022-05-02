@@ -70,7 +70,12 @@ namespace LawOffice05.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<int>("SeniorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SeniorId");
 
                     b.ToTable("Cases");
                 });
@@ -290,6 +295,31 @@ namespace LawOffice05.Migrations
                     b.ToTable("OutsideDocuments");
                 });
 
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Senior", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Seniors");
+                });
+
             modelBuilder.Entity("LawOffice05.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -500,6 +530,17 @@ namespace LawOffice05.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Case", b =>
+                {
+                    b.HasOne("LawOffice05.Infrastructure.Data.Senior", "Senior")
+                        .WithMany("Cases")
+                        .HasForeignKey("SeniorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Senior");
+                });
+
             modelBuilder.Entity("LawOffice05.Infrastructure.Data.InsideDocument", b =>
                 {
                     b.HasOne("LawOffice05.Infrastructure.Data.Instance", "Instance")
@@ -542,6 +583,17 @@ namespace LawOffice05.Migrations
                         .IsRequired();
 
                     b.Navigation("Instance");
+                });
+
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Senior", b =>
+                {
+                    b.HasOne("LawOffice05.Infrastructure.Identity.ApplicationUser", "User")
+                        .WithOne("Senior")
+                        .HasForeignKey("LawOffice05.Infrastructure.Data.Senior", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -607,9 +659,17 @@ namespace LawOffice05.Migrations
                     b.Navigation("OutsideDocuments");
                 });
 
+            modelBuilder.Entity("LawOffice05.Infrastructure.Data.Senior", b =>
+                {
+                    b.Navigation("Cases");
+                });
+
             modelBuilder.Entity("LawOffice05.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("Senior")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

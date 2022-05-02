@@ -5,32 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LawOffice05.Migrations
 {
-    public partial class AllTablesAtOnce : Migration
+    public partial class AllTablesAtOnceSiniorAdd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Cases",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InsideCaseNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    InsideCaseName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CaseDescription = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cases", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cases_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateTable(
                 name: "CompanyInfos",
                 columns: table => new
@@ -79,6 +57,53 @@ namespace LawOffice05.Migrations
                         name: "FK_Orders_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Seniors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Position = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seniors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Seniors_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InsideCaseNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    InsideCaseName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ClientFirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ClientMiddleName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ClientFamiliName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ClientAdrress = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    ClientID = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    SeniorId = table.Column<int>(type: "int", nullable: false),
+                    CaseDescription = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cases_Seniors_SeniorId",
+                        column: x => x.SeniorId,
+                        principalTable: "Seniors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -157,9 +182,9 @@ namespace LawOffice05.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cases_UserId",
+                name: "IX_Cases_SeniorId",
                 table: "Cases",
-                column: "UserId");
+                column: "SeniorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InsideDocuments_InstanceId",
@@ -180,6 +205,12 @@ namespace LawOffice05.Migrations
                 name: "IX_OutsideDocuments_InstanceId",
                 table: "OutsideDocuments",
                 column: "InstanceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seniors_UserId",
+                table: "Seniors",
+                column: "UserId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -204,6 +235,9 @@ namespace LawOffice05.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cases");
+
+            migrationBuilder.DropTable(
+                name: "Seniors");
         }
     }
 }
