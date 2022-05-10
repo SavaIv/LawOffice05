@@ -65,7 +65,15 @@
 
 <br />
 
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-primary" id="statistics-button">Show Statistics</button>
+    </div>
+</div>
 
+<br />
+
+@*
 <div class="container">
     <div class="row offset-3 col-md-6 p-3 mb-2 bg-info text-dark" >
         
@@ -78,3 +86,31 @@
                     
     </div>
 </div>
+*@
+
+<div class="container d-none" id="statistics">
+    <div class="row offset-3 col-md-6 p-3 mb-2 bg-info text-dark" >
+        
+            <h6 class="col-md-6 text-center fw-bold" id="total-orders"></h6>
+            <h6 class="col-md-6 text-center fw-bold" id="total-cases"></h6>
+                    
+    </div>
+</div>
+
+@section Scripts {
+    <script>        
+        //$.get('/api/statistics', (data) => {
+        //    console.log(data);
+        //})
+
+        $('#statistics-button').on('click', ev => {
+            $.get('/api/statistics', (data) => {
+                $('#total-orders').text(data.totalActiveOrders + " Orders");
+                $('#total-cases').text(data.totalActiveCases + " Cases");                
+
+                $('#statistics').removeClass('d-none');
+                $('#statistics-button').hide();
+            });
+        });
+    </script>
+}
