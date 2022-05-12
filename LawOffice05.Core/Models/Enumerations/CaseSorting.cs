@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LawOffice05.Core.Models.Case.Enumerations
+namespace LawOffice05.Core.Models.Enumerations
 {
     public enum CaseSorting
     {

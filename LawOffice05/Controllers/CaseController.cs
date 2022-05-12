@@ -1,5 +1,5 @@
 ﻿using LawOffice05.Core.Models.Case;
-using LawOffice05.Core.Models.Case.Enumerations;
+using LawOffice05.Core.Models.Enumerations;
 using LawOffice05.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

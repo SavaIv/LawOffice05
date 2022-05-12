@@ -1,4 +1,4 @@
-﻿using LawOffice05.Core.Models.Case.Enumerations;
+﻿using LawOffice05.Core.Models.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
