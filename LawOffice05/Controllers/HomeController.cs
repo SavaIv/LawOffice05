@@ -1,4 +1,5 @@
 ﻿using LawOffice05.Core.Models.Home;
+using LawOffice05.Core.Services.Statistics;
 using LawOffice05.Infrastructure.Data;
 using LawOffice05.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,25 +11,30 @@ namespace LawOffice05.Controllers
     {
         private readonly ILogger<HomeController> logger;
         private readonly ApplicationDbContext data;
+        private readonly IStatisticsService statistics;
 
-        public HomeController(ILogger<HomeController> _logger, ApplicationDbContext _data)
+        public HomeController(
+            ILogger<HomeController> _logger,
+            ApplicationDbContext _data,
+            IStatisticsService statistics)
         {
+
             logger = _logger;
             data = _data;
+            this.statistics = statistics;
         }
 
         public IActionResult Index()
-        {
-            var totalOrders = this.data.Orders.Count();
-            var totalCases = this.data.Cases.Count();
+        {           
+            var totalStatistics = this.statistics.Total();
 
-            var statistics = new IndexViewModel()
+            var theStatistics = new IndexViewModel()
             {
-                TotalActiveOrders = totalOrders,
-                TotalActiveCases = totalCases
+                TotalActiveOrders = totalStatistics.TotalActiveOrders,
+                TotalActiveCases = totalStatistics.TotalActiveCases
             };
 
-            return View(statistics);
+            return View(theStatistics);
         }
 
         public IActionResult Info()

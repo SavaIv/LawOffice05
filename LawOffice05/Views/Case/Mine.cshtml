@@ -1,0 +1,15 @@
+﻿@using LawOffice05.Core.Services.Cases
+@model IEnumerable<CaseServiceModel>
+
+@{
+    ViewData["Title"] = "My Cases";
+    ViewBag.AllowCaseEdit = true;
+
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">No cases!</h2>
+}
+
+<partial name="_CasesPartial" />

@@ -61,6 +61,5 @@ namespace LawOffice05.Core.Models.Case
 
         [BindNever]
         public IEnumerable<CaseDescriptionViewModel>? CaseDescriptionNames { get; set; }
-
     }
 }

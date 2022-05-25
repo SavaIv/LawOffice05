@@ -1,5 +1,7 @@
 ﻿using LawOffice05.Core.Models.Case;
 using LawOffice05.Core.Models.Enumerations;
+using LawOffice05.Core.Services.Cases;
+using LawOffice05.Core.Services.Seniors;
 using LawOffice05.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +12,110 @@ namespace LawOffice05.Controllers
     public class CaseController : Controller
     {
         private readonly ApplicationDbContext data;
+        private readonly ISeniorService seniors;
+        private readonly ICaseService cases;
 
-        public CaseController(ApplicationDbContext _data)
+        public CaseController(ApplicationDbContext _data, ICaseService _cases, ISeniorService _seniors)
         {
             data = _data;
+            cases = _cases;
+            seniors = _seniors;
+        }
+
+        [Authorize]
+        public IActionResult Mine()
+        {
+            var sineorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var theCases = cases.ByUser(sineorId);
+            
+            return View(theCases);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Edit(int caseId)
+        {
+            var loggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!UserIsSenior())
+            {
+                return RedirectToAction(nameof(SeniorsController.Become), "Seniors");
+            }
+
+            // is this our case?
+            var theCase = cases.Details(caseId);
+
+            if (theCase.SeniorId != loggedInUserId)
+            {
+                return Unauthorized();
+            }
+
+            //if everything is OK
+            return View(new CaseServiceModel
+            {
+                CaseDescription = theCase.CaseDescription,
+                ClientID = theCase.ClientID,
+                CaseId = theCase.CaseId,
+                ClientAdrress = theCase.ClientAdrress,
+                ClientFamiliName = theCase.ClientFamiliName,
+                ClientFirstName = theCase.ClientFirstName,
+                ClientMiddleName = theCase.ClientMiddleName,
+                InsideCaseName = theCase.InsideCaseName,
+                InsideCaseNumber = theCase.InsideCaseNumber,
+                SeniorId = theCase.SeniorId,
+                CaseDescriptionNames = GetCaseDescriptions()
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int caseId, CaseServiceModel caseModel)
+        {
+            // искаме инфо - кой е текущия senior (предвид id-то на логнатия юзър). Само senior може да add-ва
+            var seniorId = data.Seniors
+                .Where(d => d.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .Select(d => d.Id)
+                .FirstOrDefault();
+
+            if (seniorId == 0)
+            {
+                return RedirectToAction(nameof(SeniorsController.Become), "Seniors");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                caseModel.CaseDescriptionNames = GetCaseDescriptions();
+
+                return View(caseModel);
+            }
+
+            // call the edit service
+            var caseIsEdited = cases.Edit(
+                caseId,
+                caseModel.InsideCaseNumber,
+                caseModel.InsideCaseName,
+                caseModel.ClientFirstName,
+                caseModel.ClientMiddleName,
+                caseModel.ClientFamiliName,
+                caseModel.ClientAdrress,
+                caseModel.ClientID,
+                caseModel.CaseDescription,
+                seniorId
+                );
+
+            if (!caseIsEdited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
         public IActionResult AddCase()
         {
-            if (!UserIsDealer())
+            if (!UserIsSenior())
             {
                 return RedirectToAction(nameof(SeniorsController.Become), "Seniors");
             }
@@ -163,7 +259,7 @@ namespace LawOffice05.Controllers
             return allCaseDescriptionNames;
         }
 
-        private bool UserIsDealer()
+        private bool UserIsSenior()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userIsSenior = data.Seniors.Any(s => s.UserId == userId);

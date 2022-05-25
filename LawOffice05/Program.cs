@@ -1,4 +1,7 @@
 //using LawOffice05.Data;
+using LawOffice05.Core.Services.Cases;
+using LawOffice05.Core.Services.Seniors;
+using LawOffice05.Core.Services.Statistics;
 using LawOffice05.Extensions;
 using LawOffice05.Infrastructure.Data;
 using LawOffice05.Infrastructure.Identity;
@@ -17,12 +20,17 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
         {
-            options.SignIn.RequireConfirmedAccount = true;
+            options.SignIn.RequireConfirmedAccount = true;  // e-amil confirmation ???
             options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
         })                        
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<ISeniorService, SeniorService>();
+builder.Services.AddScoped<ICaseService, CaseService>();
 
 var app = builder.Build();
 
