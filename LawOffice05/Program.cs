@@ -23,7 +23,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             options.SignIn.RequireConfirmedAccount = true;  // e-amil confirmation ???
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = true;
-        })                        
+        })
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();

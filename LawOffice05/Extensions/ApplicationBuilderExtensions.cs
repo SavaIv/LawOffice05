@@ -1,4 +1,7 @@
 ﻿using LawOffice05.Infrastructure.Data;
+using LawOffice05.Infrastructure.Identity;
+using static LawOffice05.Core.Constants.WebConstants;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace LawOffice05.Extensions
@@ -12,10 +15,9 @@ namespace LawOffice05.Extensions
             var services = serviceScope.ServiceProvider;
 
             //MigrateDatabase(services);
-
             SeedCompanyInfo(services);
             SeedOrderProblemType(services);
-            //SeedAdministrator(services);
+            SeedAdministrator(services);
 
             return app;
         }
@@ -66,6 +68,42 @@ namespace LawOffice05.Extensions
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedAdministrator(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task
+                .Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                    {
+                        return;
+                    }
+
+                    var role = new IdentityRole { Name = AdministratorRoleName };
+
+                    await roleManager.CreateAsync(role);
+
+                    const string adminEmail = "admin@admin.adm";
+                    const string adminPassword = "admin123";
+
+                    var user = new ApplicationUser
+                    {
+                        Email = adminEmail,
+                        UserName = adminEmail,
+                        FirstName = "Admin",
+                        LastName = "Adminov"
+                    };
+
+                    //await userManager.CreateAsync(user, adminPassword);
+
+                    //await userManager.AddToRoleAsync(user, role.Name);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }
