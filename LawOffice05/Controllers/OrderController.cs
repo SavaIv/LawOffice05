@@ -1,4 +1,6 @@
-﻿using LawOffice05.Core.Models.Orders;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using LawOffice05.Core.Models.Orders;
 using LawOffice05.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +12,12 @@ namespace LawOffice05.Controllers
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext data;
+        private readonly IMapper mapper;
 
-        public OrderController(ApplicationDbContext _data)
+        public OrderController(ApplicationDbContext _data, IMapper _mapper)
         {
             data = _data;
+            mapper = _mapper;
         }
 
         [Authorize]
@@ -67,18 +71,7 @@ namespace LawOffice05.Controllers
         {
             var ordres = data.Orders       
                 .OrderByDescending(o => o.Id)
-                .Select(o => new OrderListingViewModel
-                {
-                    OrderId = o.Id,
-                    ProblemType = o.ProblemType,
-                    UrgencyType = o.UrgencyType,
-                    TypeOfAnswer = o.TypeOfAnswer,
-                    ProblemDescription = o.ProblemDescription,
-                    StatusOfTheOrder = o.StatusOfTheOrder,
-                    UserName = o.User.FirstName + " " + o.User.LastName,
-                    FeedBack = o.FeedBack
-                })
-                
+                .ProjectTo<OrderListingViewModel>(mapper.ConfigurationProvider)                     
                 .ToList();        
             
             return View(ordres);

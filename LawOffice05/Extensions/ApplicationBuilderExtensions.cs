@@ -43,7 +43,7 @@ namespace LawOffice05.Extensions
                 new CompanyInfo { TypeOfLaw = "Наказателно Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
                 new CompanyInfo { TypeOfLaw = "Търговско Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
                 new CompanyInfo { TypeOfLaw = "Трудово Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-                new CompanyInfo { TypeOfLaw = "Международно Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }                
+                new CompanyInfo { TypeOfLaw = "Международно Право", InfoAboutLaw = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }
             });
 
             data.SaveChanges();
@@ -64,7 +64,7 @@ namespace LawOffice05.Extensions
                 new OrderProblemType { ProblemType = "Family problems"},
                 new OrderProblemType { ProblemType = "Property problems"},
                 new OrderProblemType { ProblemType = "Tax problems"},
-                new OrderProblemType { ProblemType = "Other"}                
+                new OrderProblemType { ProblemType = "Other"}
             });
 
             data.SaveChanges();
@@ -72,33 +72,40 @@ namespace LawOffice05.Extensions
 
         private static void SeedAdministrator(IServiceProvider services)
         {
-            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            //var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = services.GetService<UserManager<ApplicationUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
             Task
                 .Run(async () =>
                 {
-                    if (await roleManager.RoleExistsAsync(AdministratorRoleName))
-                    {
-                        return;
+                    //var role = new IdentityRole { Name = AdministratorRoleName };
+                    var role = new IdentityRole { Name = "Test" };
+
+                    //if (!await roleManager.RoleExistsAsync(AdministratorRoleName))
+                    if (!await roleManager.RoleExistsAsync("Test"))
+                    {                      
+                        await roleManager.CreateAsync(role);
+
+                        //return;
                     }
-
-                    var role = new IdentityRole { Name = AdministratorRoleName };
-
-                    await roleManager.CreateAsync(role);
 
                     const string adminEmail = "admin@admin.adm";
                     const string adminPassword = "admin123";
 
                     var user = new ApplicationUser
                     {
-                        Email = adminEmail,
-                        UserName = adminEmail,
+                        //Email = adminEmail,
+                        //UserName = adminEmail,
+                        //Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
+                        Email = "admin@admin.adm",
+                        UserName = "admin123",
                         FirstName = "Admin",
                         LastName = "Adminov"
                     };
 
                     //await userManager.CreateAsync(user, adminPassword);
+                    await userManager.CreateAsync(user, "admin123");
 
                     //await userManager.AddToRoleAsync(user, role.Name);
                 })

@@ -18,7 +18,7 @@ namespace LawOffice05.Controllers.Api
         }
 
         [HttpGet]
-        // нещо не е ОК - не ми се плучава
+        // нещо не е ОК - не ми се получава
         public AllCasesApiResponseModel AllCases([FromQuery] AllCasesApiRequestModel query)
         {
             var caseQuery = data.Cases.AsQueryable();

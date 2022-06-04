@@ -1,19 +1,23 @@
 ﻿using LawOffice05.Infrastructure.Data;
+using AutoMapper.QueryableExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace LawOffice05.Core.Services.Cases
 {
     public class CaseService : ICaseService
     {
         private readonly ApplicationDbContext data;
+        private readonly IMapper mapper;
 
-        public CaseService(ApplicationDbContext _data)
+        public CaseService(ApplicationDbContext _data, IMapper _mapper)
         {
             data = _data;
+            mapper = _mapper;
         }
 
         public IEnumerable<CaseServiceModel> ByUser(string userId)
@@ -41,19 +45,20 @@ namespace LawOffice05.Core.Services.Cases
         {
             var result = data.Cases
                 .Where(c => c.Id == caseId)
-                .Select(c => new CaseServiceModel
-                {
-                    CaseDescription = c.CaseDescription,
-                    ClientID = c.ClientID,
-                    CaseId = c.Id,
-                    ClientAdrress = c.ClientAdrress,
-                    ClientFamiliName = c.ClientFamiliName,
-                    ClientFirstName = c.ClientFirstName,
-                    ClientMiddleName = c.ClientMiddleName,
-                    InsideCaseName = c.InsideCaseName,
-                    InsideCaseNumber = c.InsideCaseNumber,
-                    SeniorId = c.Senior.UserId
-                })
+                .ProjectTo<CaseServiceModel>(mapper.ConfigurationProvider)
+                //.Select(c => new CaseServiceModel
+                //{
+                //    CaseDescription = c.CaseDescription,
+                //    ClientID = c.ClientID,
+                //    CaseId = c.Id,
+                //    ClientAdrress = c.ClientAdrress,
+                //    ClientFamiliName = c.ClientFamiliName,
+                //    ClientFirstName = c.ClientFirstName,
+                //    ClientMiddleName = c.ClientMiddleName,
+                //    InsideCaseName = c.InsideCaseName,
+                //    InsideCaseNumber = c.InsideCaseNumber,
+                //    SeniorId = c.Senior.UserId
+                //})
                 .FirstOrDefault();
 
             return result;

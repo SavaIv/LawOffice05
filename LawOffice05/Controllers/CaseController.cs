@@ -1,4 +1,5 @@
-﻿using LawOffice05.Core.Models.Case;
+﻿using AutoMapper;
+using LawOffice05.Core.Models.Case;
 using LawOffice05.Core.Models.Enumerations;
 using LawOffice05.Core.Services.Cases;
 using LawOffice05.Core.Services.Seniors;
@@ -14,12 +15,18 @@ namespace LawOffice05.Controllers
         private readonly ApplicationDbContext data;
         private readonly ISeniorService seniors;
         private readonly ICaseService cases;
+        private readonly IMapper mapper;
 
-        public CaseController(ApplicationDbContext _data, ICaseService _cases, ISeniorService _seniors)
+        public CaseController(
+            ApplicationDbContext _data, 
+            ICaseService _cases, 
+            ISeniorService _seniors,
+            IMapper _mapper)
         {
             data = _data;
             cases = _cases;
             seniors = _seniors;
+            mapper = _mapper;
         }
 
         [Authorize]
@@ -51,21 +58,26 @@ namespace LawOffice05.Controllers
                 return Unauthorized();
             }
 
+            var caseForm = this.mapper.Map<CaseServiceModel>(theCase);
+            caseForm.CaseDescriptionNames = GetCaseDescriptions();
+
             //if everything is OK
-            return View(new CaseServiceModel
-            {
-                CaseDescription = theCase.CaseDescription,
-                ClientID = theCase.ClientID,
-                CaseId = theCase.CaseId,
-                ClientAdrress = theCase.ClientAdrress,
-                ClientFamiliName = theCase.ClientFamiliName,
-                ClientFirstName = theCase.ClientFirstName,
-                ClientMiddleName = theCase.ClientMiddleName,
-                InsideCaseName = theCase.InsideCaseName,
-                InsideCaseNumber = theCase.InsideCaseNumber,
-                SeniorId = theCase.SeniorId,
-                CaseDescriptionNames = GetCaseDescriptions()
-            });
+            return View(caseForm);
+                        
+            //return View(new CaseServiceModel
+            //{
+            //    CaseDescription = theCase.CaseDescription,
+            //    ClientID = theCase.ClientID,
+            //    CaseId = theCase.CaseId,
+            //    ClientAdrress = theCase.ClientAdrress,
+            //    ClientFamiliName = theCase.ClientFamiliName,
+            //    ClientFirstName = theCase.ClientFirstName,
+            //    ClientMiddleName = theCase.ClientMiddleName,
+            //    InsideCaseName = theCase.InsideCaseName,
+            //    InsideCaseNumber = theCase.InsideCaseNumber,
+            //    SeniorId = theCase.SeniorId,
+            //    CaseDescriptionNames = GetCaseDescriptions()
+            //});
         }
 
         [HttpPost]
